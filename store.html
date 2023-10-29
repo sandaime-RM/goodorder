@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="script/store.js" type="module"></script>
+    <script src="script/login.js" type="module"></script>
+    <link rel="icon" href="img/icon.png">
+
+    <title>Good Order</title>
+</head>
+<body >
+    <header>
+        <div class="container"> 
+            <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+              <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none fs-4">
+                <img src="img/icon.png" width="60" class="px-2">Good Order
+              </a>
+        
+              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="index.html" class="nav-link px-2 link-dark">ホーム</a></li>
+                <li><a href="#" class="nav-link px-2 link-info">店舗設定</a></li>
+                <li><a href="help.html" class="nav-link px-2 link-dark">使い方</a></li>
+            </ul>
+        
+              <div class="col-md-3 text-end" id="loginBtn">
+                <button type="button" class="btn btn-outline-info me-2" onclick="login()">ログイン</button>
+              </div>
+            </header>
+          </div>
+    </header>
+
+    <!-- 待機画面 -->
+    <!-- <div id="loading" style="z-index:100; position: absolute; left:0; top:0; height:100vh; width:100vw; background-size: cover;background-position: center center;" class="bg-white text-center">
+        <div class="my-5">
+            <img src="img/icon.png" width="130" class="my-4">
+            <h4 class="fw-normal my-2">Good Order</h4>
+
+            <div class="spinner-border text-info my-5" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+        </div>
+    </div> -->
+
+    <main>
+        <div class="container">
+            <h3>店舗設定</h3>
+
+            <div class="row">
+                <!-- 設定フォーム -->
+                <div class="col-lg-5 py-3 px-3">
+                    <div class="form-group mb-3">
+                        <label>店舗名</label>
+                        <input class="form-control" type="text" id="sname">
+                    </div>
+    
+                    <div class="form-group mb-3">
+                        <label>運営者名・団体名</label>
+                        <input class="form-control" type="text" id="steam">
+                    </div>
+    
+                    <div class="form-group mb-3">
+                        <label>商品一覧</label>
+                        <ul class="list-group" id="menu">
+                            
+                        </ul>
+                        <div style="text-align: right;" class="py-3">
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">追加</button>
+                        </div>
+                    </div>
+    
+                    <div class="py-2">
+                        <button class="btn btn-info col-12 mb-3" onclick="uploadProfile()">更新</button>
+    
+                        <button class="btn btn-danger col-12" onclick="reset()">注文をリセット</button>
+                    </div>
+                </div>
+
+                <!-- 注文一覧 -->
+                <div class="col-lg-7 py-3 px-3">
+                    <h2 class="fw-normal fs-4">注文履歴</h2>
+                    <div class="text-end mb-2">
+                        <button class="btn btn-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/>
+                              </svg>
+                            CSV出力
+                        </button>
+                    </div>
+
+                    <table class="table small">
+                        <thead>
+                          <tr>
+                            <th>No.</th>
+                            <th>内容</th>
+                            <th>金額 (￥)</th>
+                            <th>状態</th>
+                            <th>日時</th>
+                          </tr>
+                        </thead>
+                        <tbody id="orderHistory">
+                          <tr>
+                            <td>001</td>
+                            <td>ソースマヨ 1, ネギ塩2</td>
+                            <td>850</td>
+                            <td>提供済</td>
+                            <td>10/22 22:46</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">メニューを追加</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label>商品名</label>
+                        <input class="form-control" id="itemName">
+                    </div>
+                    
+                    <div class="pb-2">
+                        <label>単価</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="itemPrice" aria-label="価格" aria-describedby="basic-addon2">
+                            <span class="input-group-text" id="basic-addon2">円</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>詳細</label>
+                        <textarea class="form-control" style="height:5em" id="itemDetail"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-info col-8" onclick="addMenu()">追加</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

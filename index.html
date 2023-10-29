@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="script/index.js" type="module"></script>
+    <script src="script/login.js" type="module"></script>
+    <link rel="icon" href="img/icon.png">
+
+    <!-- QR生成用 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script> 
+
+    <title>Good Order</title>
+</head>
+<body >
+    <header>
+        <div class="container">
+            <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+              <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none fs-4">
+                <img src="img/icon.png" width="60" class="px-2">Good Order
+              </a>
+        
+              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 link-info">ホーム</a></li>
+                <li><a href="store.html" class="nav-link px-2 link-dark">店舗設定</a></li>
+                <li><a href="help.html" class="nav-link px-2 link-dark">使い方</a></li>
+              </ul>
+        
+              <div class="col-md-3 text-end" id="loginBtn">
+                <button type="button" class="btn btn-outline-info me-2" onclick="login()">ログイン</button>
+              </div>
+            </header>
+          </div>
+    </header>
+
+    <!-- 待機画面 -->
+    <div id="loading" style="z-index:100; position: absolute; left:0; top:0; height:100vh; width:100vw; background-size: cover;background-position: center center;" class="bg-white text-center">
+        <div class="my-5">
+            <img src="img/icon.png" width="130" class="my-4">
+            <h4 class="fw-normal my-2">Good Order</h4>
+
+            <div class="spinner-border text-info my-5" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div id="qrspace" style="display: none;position: absolute; width:160px; height:170px; right:70px;" class="bg-white shadow-sm border rounded-3">
+                <div class="text-end">
+                    <span class="px-2 small">商品提供情報</span>
+                    <button class="btn btn-default py-1 px-2" onclick="crossQR()">✕</button>
+                </div>
+                <div class="p-2 text-center">
+                    <div id="img-qr"></div>
+                </div>
+            </div>
+
+            <div class="text-center fw-bold fs-4" id="shopName"></div>
+            <div class="pb-3 small text-center" id="clubName"></div>
+            <div class="justify-content-center d-flex pb-4">
+                <div class="bg-dark text-light py-2 px-4 rounded-pill shadow">
+                    
+                    <span class="px-2">
+                        時刻 <span class="fs-4 fw-bold"><span id="hour">--</span><span style="color:limegreen">:</span><span id="minute">--</span></span>
+                    </span>
+                    <span class="px-2">
+                        売上 <span class="fs-4 fw-bold"><span style="color:limegreen">￥</span><span id="earningTotal">---</span>
+                    </span>
+                    <span class="px-2">
+                        注文 <span class="fs-4 fw-bold"><span id="orderTotal">--</span><span style="color:limegreen" class="fs-6">件</span></span>
+                    </span>
+                </div>
+            </div>
+
+            <h3 class="fw-normal">待機中</h3>
+
+            <div class="row py-3" id="orderWaiting">
+                <div class="col-lg-3 py-3" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal"><div class="card py-5 shadow-sm px-3 border-3" style="border-style: dashed;"><div class="text-center" style="color: #bbb;"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg><p class="py-3 my-0">注文を追加</p></div></div></div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <h3 class="fw-normal">呼び出し済み</h3>
+
+            <div class="row py-3" id="orderDone">
+               
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">注文を追加</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center fw-bold text-secondary mb-3">呼び出し番号 <br><span class="text-dark fs-2" id="nextNum">---</span></div>
+
+                <div class="px-4" id="orderList">
+
+                </div>
+
+                <div class="fw-bold text-end fs-3 py-2"><span class="fs-6 text-secondary">支払額</span> ￥<span id="totalPrice">0</span></div>
+            
+                <div class="px-2">
+                    <h5 class="fw-normal">顧客情報</h5>
+                    <div class="row px-2">
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check1">
+                            <label class="form-check-label" for="check1">
+                              理科大生
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check2">
+                            <label class="form-check-label" for="check2">
+                              高校生
+                            </label>
+                        </div>
+    
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check3">
+                            <label class="form-check-label" for="check3">
+                              理科大教職員
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check4">
+                            <label class="form-check-label" for="check4">
+                              男性
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check5">
+                            <label class="form-check-label" for="check5">
+                              女性
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check6">
+                            <label class="form-check-label" for="check6">
+                              10代以下
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check7">
+                            <label class="form-check-label" for="check7">
+                              20～30代
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check8">
+                            <label class="form-check-label" for="check8">
+                              40～50代
+                            </label>
+                        </div>
+
+                        <div class="form-check col-4">
+                            <input class="form-check-input" type="checkbox" value="" id="check9">
+                            <label class="form-check-label" for="check9">
+                              60代以上
+                            </label>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-primary col-8" onclick="sendOrder()">追加</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
