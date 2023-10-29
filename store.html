@@ -38,7 +38,7 @@
     </header>
 
     <!-- 待機画面 -->
-    <!-- <div id="loading" style="z-index:100; position: absolute; left:0; top:0; height:100vh; width:100vw; background-size: cover;background-position: center center;" class="bg-white text-center">
+    <div id="loading" style="z-index:100; position: absolute; left:0; top:0; height:100vh; width:100vw; background-size: cover;background-position: center center;" class="bg-white text-center">
         <div class="my-5">
             <img src="img/icon.png" width="130" class="my-4">
             <h4 class="fw-normal my-2">Good Order</h4>
@@ -47,7 +47,7 @@
                 <span class="visually-hidden">Loading...</span>
               </div>
         </div>
-    </div> -->
+    </div>
 
     <main>
         <div class="container">
@@ -87,7 +87,7 @@
                 <div class="col-lg-7 py-3 px-3">
                     <h2 class="fw-normal fs-4">注文履歴</h2>
                     <div class="text-end mb-2">
-                        <button class="btn btn-info">
+                        <button class="btn btn-info" onclick="exportCSV()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/>
                               </svg>

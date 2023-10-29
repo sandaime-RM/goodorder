@@ -139,7 +139,8 @@ function sendOrder() {
     time : date.getTime(),
     status : 1,
     price : totalPrice,
-    number : currentNum
+    number : currentNum,
+    customerTypes : customerTypes
   });
 
   set(ref(db, "users/" + uid + "/info/nextNum"), (Number(shopData.info.nextNum) + 1))

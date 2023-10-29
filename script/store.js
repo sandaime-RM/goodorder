@@ -28,6 +28,7 @@ const auth = getAuth();
 var uid;
 var menu = [];
 let userData;
+const customerTypes = ["理科大生", "高校生", "理科大教職員", "男性", "女性", "10代以下", "20～30代", "40～50代", "60代以上"];
 var menuModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 
 //ログイン状態の取得
@@ -72,7 +73,7 @@ onAuthStateChanged(auth, (user) => {
                         }
                     });
 
-                    orderText = orderText.slice( 0, -1 );
+                    orderText = orderText.slice( 0, -2 );
 
                     document.getElementById("orderHistory").innerHTML += '<tr><td>'+number+'</td><td>'+orderText+'</td><td>'+orders[key].price+'</td><td class="text-'+statusCol+'">'+status+'</td><td>'+dateText+'</td></tr>'
                 });
@@ -180,3 +181,52 @@ function reset() {
 
 window.reset = reset;
 export{reset}
+
+
+//注文履歴をCSVで出力
+function exportCSV() {
+    var orders = userData.orders;
+    let items = ["受付日時", "状態更新", "No.", "金額", "状態"];
+    let tempData = [];
+    items = items.concat(customerTypes);
+
+    userData.info.items.forEach(item => {
+        items.push(item.name);
+    });
+
+    console.log(items);
+
+    //出力用データの作成
+    tempData.push(items);
+
+    Object.keys(orders).forEach((key, index) => {
+        var order = orders[key];
+        var startDate = (new Date(order.time)).toLocaleString();
+        var endDate = (new Date(order.endTime)).toLocaleString();
+        var status = "準備中";
+        var data = [];
+
+        if(status == 2) {status = "呼出済";}
+        if(status == 3) {status = "提供済";}
+
+        data = [startDate, endDate, order.number, order.price, status];
+
+        data = data.concat(order.customerTypes);
+
+        data = data.concat(order.items);
+
+        tempData.push(data);
+    });
+
+    //CSVへの変換とダウンロード
+    let csvContent = 'data:text/csv;charset=utf-8,' + tempData.map(e => e.join(',')).join('\n');
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'order_data.csv');
+    document.body.appendChild(link);
+    link.click();
+}
+
+window.exportCSV = exportCSV;
+export{exportCSV}
