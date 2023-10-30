@@ -24,7 +24,11 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth();
 const db = getDatabase(app);
+
 var uid, shopData;
+var lastData = null;
+const beep2 = new Audio("../sounds/receipt07.mp3");
+const beep1 = new Audio("../sounds/hirameki2.mp3");
 
 //ログイン状態の取得
 onAuthStateChanged(auth, (user) => {
@@ -33,6 +37,13 @@ onAuthStateChanged(auth, (user) => {
 
         onValue(ref(db, "users/" + uid), (snapshot) => {
             shopData = snapshot.val();
+
+            //注文追加の効果音
+            if(lastData) {
+                if(Object.keys(shopData.orders).length > Object.keys(lastData).length) {
+                    beep1.play();
+                }
+            }
             
             document.getElementById("wait").innerHTML = "";
             document.getElementById("available").innerHTML = "";
@@ -45,9 +56,20 @@ onAuthStateChanged(auth, (user) => {
 
                     if(shopData.orders[key].status == 2) {
                         document.getElementById("available").innerHTML += '<div class="col-lg-4 py-3 px-4"><div class="fs-1 text-center fw-bold text-success">'+( '000' + shopData.orders[key].number ).slice( -3 )+'</div></div>';
+                        
+                        //完成したときの効果音
+                        if(lastData) {
+                            if(lastData[key]) {
+                                if(lastData[key].status == 1) {
+                                    beep2.play();
+                                }
+                            }
+                        }
                     }
                 });
             }
+
+            lastData = shopData.orders;
         });
     } else {
         alert("ログインが必要です。");
