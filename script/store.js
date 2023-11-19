@@ -104,16 +104,16 @@ const uploadProfile = function() {
 
         userData = snapshot.val();
 
-        if(userData.info.nextNum) {
-            shopData.info.nextNum = userData.info.nextNum;
-        }
-
         if(!userData) {
             set(ref(db, "users/" + uid), shopData)
             .then(() => {
                 window.location.href = "../";
             });
         } else {
+            if(userData.info.nextNum) {
+                shopData.info.nextNum = userData.info.nextNum;
+            }
+
             update(ref(db, "users/" + uid), shopData)
             .then(() => {
                 window.location.href = "../";
