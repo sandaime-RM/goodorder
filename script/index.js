@@ -48,6 +48,9 @@ onAuthStateChanged(auth, (user) => {
       //店舗データを取得
       onValue(ref(db, "users/" + uid), (snapshot) => {
         shopData = snapshot.val();
+        //店舗設定なしの場合、店舗設定画面に遷移
+        if(!shopData) {window.location.href="store.html";}
+
         console.log(shopData.info.nextNum)
 
         //店名・クラブ名の表示
