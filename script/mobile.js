@@ -25,7 +25,7 @@ const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
 const uid = getParam("shop");
-const num = getParam("num");
+var num = getParam("num");
 
 if(uid) {
     onValue(ref(db, "users/" + uid), (snapshot) => {
