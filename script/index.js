@@ -91,7 +91,7 @@ onAuthStateChanged(auth, (user) => {
       setInterval(dispClock, 10000);
     } else {
         alert("ログインが必要です。");
-        login();
+        document.getElementById("loading").style.display = "none";
     }
 });
 
@@ -198,7 +198,7 @@ function dispOrders() {
 
     //「呼び出し済み」に表示
     if(shopData.orders[key].status == 2) {
-      document.getElementById("orderDone").innerHTML += '<div class="col-lg-3 py-3"><div class="card shadow border-success"><div class="card-body"><div class="fs-3 text-center fw-bold text-success">'+( '000' + shopData.orders[key].number ).slice( -3 )+'</div><ul class="list-group my-2 mb-3">'+itemList+'</ul><button class="btn btn-outline-primary" onclick="changeStatus('+index +', 3)">終了</button><button class="ms-2 btn btn-outline-danger" onclick="del('+index +')">削除</button></div></div></div>'
+      document.getElementById("orderDone").innerHTML += '<div class="col-lg-3 py-3"><div class="card shadow border-success"><div class="card-body"><div class="fs-3 text-center fw-bold text-success">'+( '000' + shopData.orders[key].number ).slice( -3 )+'</div><ul class="list-group my-2 mb-3">'+itemList+'</ul><button class="btn btn-outline-primary" onclick="changeStatus('+index +', 3)">終了</button><button class="ms-2 btn btn-outline-danger" onclick="del('+index +')">削除</button><button class="btn btn-outline-primary" onclick="changeStatus('+index +', 1)">戻す</button></div></div></div>'
     }
   });
 }
