@@ -125,15 +125,24 @@ function sendOrder() {
   var totalPrice = 0;
   var currentNum = shopData.info.nextNum;
   var customerTypes = [];
+  var permit = false;
 
   Object.keys(items).forEach((key, index) => {
     buyItems[key] = Number(document.getElementById("item_" + index).value);
-    totalPrice += items[key].price * Number(document.getElementById("item_" + index).value)
+    totalPrice += items[key].price * Number(document.getElementById("item_" + index).value);
+    if(buyItems[key] > 0) {
+      permit = true;
+    }
   });
 
   //顧客情報の登録
   for(var i=0; i<=8; i++) {
     customerTypes[i] = document.getElementById("check" + (i+1)).checked;
+  }
+
+  if(!permit) {
+    alert("1つも商品が追加されていません。");
+    return;
   }
 
   push(ref(db, "users/" + uid + "/orders"), {

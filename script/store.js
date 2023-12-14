@@ -47,6 +47,10 @@ onAuthStateChanged(auth, (user) => {
             document.getElementById("steam").value = userData.info.clubName;
             document.getElementById("menu").innerHTML = "";
 
+            if(userData.info.receipt) {
+                document.getElementById("receiptCheck").checked = true;
+            }
+
             menu = userData.info.items;
 
             dispMenu();
@@ -97,6 +101,7 @@ const uploadProfile = function() {
             info : {
                 shopName : document.getElementById("sname").value,
                 clubName : document.getElementById("steam").value,
+                receipt : document.getElementById("receiptCheck").checked,
                 items : menu,
                 nextNum : 1
             }
